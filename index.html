@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReadmeMagic — AI-Powered README Generator</title>
+<meta name="description" content="Generate professional GitHub READMEs in seconds. Beautiful, AI-powered README generator with live preview, templates, and one-click download.">
+<meta property="og:title" content="ReadmeMagic — AI-Powered README Generator">
+<meta property="og:description" content="Generate professional GitHub READMEs in seconds.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --bg4: #22222e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0f0f8;
+    --text2: #9090a8;
+    --text3: #5a5a72;
+    --accent: #7c6af7;
+    --accent2: #a855f7;
+    --accent-glow: rgba(124,106,247,0.25);
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --teal: #14b8a6;
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'Instrument Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  [data-theme="light"] {
+    --bg: #f8f7ff;
+    --bg2: #ffffff;
+    --bg3: #f0eeff;
+    --bg4: #e8e5ff;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #0f0e1a;
+    --text2: #4a4a6a;
+    --text3: #8a8aaa;
+    --accent: #6c5ce7;
+    --accent2: #9333ea;
+    --accent-glow: rgba(108,92,231,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+  [data-theme="light"] nav { background: rgba(248,247,255,0.85); }
+  .nav-logo {
+    font-family: var(--font-head);
+    font-weight: 800; font-size: 1.2rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+  .btn-ghost {
+    background: none; border: 1px solid var(--border2);
+    color: var(--text2); padding: 0.4rem 1rem;
+    border-radius: 999px; font-size: 0.85rem;
+    cursor: pointer; font-family: var(--font-body);
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; color: #fff; padding: 0.45rem 1.1rem;
+    border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; font-family: var(--font-body);
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-primary:active { transform: scale(0.98); }
+  .theme-btn {
+    background: var(--bg3); border: 1px solid var(--border);
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem; transition: all 0.2s;
+  }
+  .theme-btn:hover { border-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    padding: 9rem 2rem 5rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-glow), transparent);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--bg3); border: 1px solid var(--border2);
+    padding: 0.3rem 0.85rem; border-radius: 999px;
+    font-size: 0.78rem; color: var(--text2); margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+  }
+  .hero-badge span { color: var(--accent); }
+  .hero h1 {
+    font-family: var(--font-head); font-weight: 800;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    line-height: 1.08; letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, #ec4899 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 1.15rem; color: var(--text2); max-width: 560px;
+    margin: 0 auto 2.5rem; line-height: 1.7;
+  }
+  .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-large {
+    padding: 0.8rem 2rem; font-size: 1rem; font-weight: 600;
+    border-radius: 999px; cursor: pointer; font-family: var(--font-body);
+    transition: all 0.2s; border: none;
+  }
+  .btn-large.primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; box-shadow: 0 0 32px var(--accent-glow);
+  }
+  .btn-large.primary:hover { transform: translateY(-2px); box-shadow: 0 4px 40px var(--accent-glow); }
+  .btn-large.secondary {
+    background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--text);
+  }
+  .btn-large.secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 3rem;
+    margin-top: 4rem; flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-head); font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--text3); margin-top: 0.2rem; }
+
+  /* MAIN APP */
+  .app-section {
+    max-width: 1400px; margin: 0 auto;
+    padding: 2rem 2rem 6rem;
+  }
+  .section-label {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .section-label h2 {
+    font-family: var(--font-head); font-size: 2rem;
+    font-weight: 700; letter-spacing: -0.02em;
+  }
+  .section-label p { color: var(--text2); margin-top: 0.5rem; }
+
+  /* TABS */
+  .tab-bar {
+    display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+    background: var(--bg3); padding: 0.3rem;
+    border-radius: var(--radius); border: 1px solid var(--border);
+    width: fit-content;
+  }
+  .tab-btn {
+    padding: 0.45rem 1.1rem; border-radius: 8px; border: none;
+    background: none; color: var(--text2); font-size: 0.85rem;
+    cursor: pointer; font-family: var(--font-body); font-weight: 500;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--accent); color: #fff;
+  }
+  .tab-btn:not(.active):hover { color: var(--text); background: var(--bg4); }
+
+  /* APP LAYOUT */
+  .app-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem; align-items: start;
+  }
+  @media (max-width: 900px) {
+    .app-layout { grid-template-columns: 1fr; }
+  }
+
+  /* FORM PANEL */
+  .panel {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+  }
+  .panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.25rem; padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-title {
+    font-family: var(--font-head); font-size: 1rem; font-weight: 700;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .panel-title .icon { font-size: 1rem; }
+
+  /* FORM */
+  .form-grid { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .field label {
+    font-size: 0.8rem; font-weight: 600; color: var(--text2);
+    letter-spacing: 0.04em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .field label .req { color: var(--accent); }
+  .field input, .field textarea, .field select {
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text); padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-sm); font-size: 0.9rem;
+    font-family: var(--font-body); transition: border 0.2s;
+    outline: none; resize: vertical;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+  .field textarea { min-height: 80px; }
+  .field select option { background: var(--bg3); }
+
+  /* TEMPLATE PICKER */
+  .template-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .template-card {
+    padding: 0.7rem 0.6rem; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border); cursor: pointer;
+    text-align: center; transition: all 0.2s;
+    background: var(--bg3);
+  }
+  .template-card:hover { border-color: var(--accent); }
+  .template-card.selected { border-color: var(--accent); background: var(--accent-glow); }
+  .template-card .t-icon { font-size: 1.2rem; margin-bottom: 0.25rem; }
+  .template-card .t-name { font-size: 0.75rem; font-weight: 600; color: var(--text2); }
+  .template-card.selected .t-name { color: var(--accent); }
+
+  /* TAGS */
+  .tags-input-wrap {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 0.5rem;
+    min-height: 44px; cursor: text;
+    transition: border 0.2s;
+  }
+  .tags-input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .tag-chip {
+    display: flex; align-items: center; gap: 0.3rem;
+    background: var(--accent-glow); border: 1px solid var(--accent);
+    color: var(--accent); padding: 0.15rem 0.55rem;
+    border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+  }
+  .tag-chip button {
+    background: none; border: none; color: var(--accent);
+    cursor: pointer; font-size: 0.9rem; padding: 0; line-height: 1;
+    transition: opacity 0.2s;
+  }
+  .tag-chip button:hover { opacity: 0.6; }
+  .tags-text-input {
+    background: none; border: none; outline: none;
+    color: var(--text); font-size: 0.85rem; font-family: var(--font-body);
+    min-width: 80px; flex: 1;
+  }
+
+  /* BADGES */
+  .badges-wrap { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+  .badge-toggle {
+    padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.75rem;
+    font-weight: 600; cursor: pointer; transition: all 0.2s; border: none;
+    font-family: var(--font-mono);
+  }
+
+  /* ACTIONS */
+  .form-actions {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem;
+  }
+  .btn-action {
+    flex: 1; min-width: 120px; padding: 0.65rem 1rem;
+    border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; font-family: var(--font-body); transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  }
+  .btn-generate {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; color: #fff;
+  }
+  .btn-generate:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-sample {
+    background: var(--bg3); border: 1px solid var(--border2); color: var(--text2);
+  }
+  .btn-sample:hover { border-color: var(--teal); color: var(--teal); }
+  .btn-clear {
+    background: var(--bg3); border: 1px solid var(--border2); color: var(--text3);
+    padding: 0.65rem; flex: 0;
+  }
+  .btn-clear:hover { border-color: var(--red); color: var(--red); }
+
+  /* PREVIEW PANEL */
+  .preview-sticky { position: sticky; top: 80px; }
+  .preview-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+  .preview-tabs { display: flex; gap: 0.4rem; }
+  .preview-tab {
+    padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.8rem;
+    border: 1px solid var(--border); background: none; color: var(--text2);
+    cursor: pointer; font-family: var(--font-body); transition: all 0.2s;
+  }
+  .preview-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .preview-actions { display: flex; gap: 0.5rem; }
+  .btn-icon {
+    width: 34px; height: 34px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border2); background: var(--bg3);
+    color: var(--text2); cursor: pointer; display: flex;
+    align-items: center; justify-content: center; font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+  .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-icon.success { border-color: var(--green); color: var(--green); }
+
+  /* PREVIEW CONTENT */
+  .preview-box {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    max-height: 75vh; overflow-y: auto;
+    font-family: var(--font-mono); font-size: 0.82rem;
+    line-height: 1.7; color: var(--text2); white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .preview-box::-webkit-scrollbar { width: 6px; }
+  .preview-box::-webkit-scrollbar-track { background: transparent; }
+  .preview-box::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 999px; }
+  .preview-rendered {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem 2rem;
+    max-height: 75vh; overflow-y: auto;
+  }
+  .preview-rendered::-webkit-scrollbar { width: 6px; }
+  .preview-rendered::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 999px; }
+
+  /* MARKDOWN STYLES */
+  .md-body { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.75; color: var(--text); }
+  .md-body h1 { font-family: var(--font-head); font-size: 1.7rem; font-weight: 800; margin: 0 0 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; letter-spacing: -0.02em; }
+  .md-body h2 { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; margin: 1.5rem 0 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+  .md-body h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 0.4rem; }
+  .md-body p { margin: 0.5rem 0; }
+  .md-body ul, .md-body ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+  .md-body li { margin: 0.2rem 0; }
+  .md-body code { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 0.1em 0.35em; font-family: var(--font-mono); font-size: 0.85em; color: var(--accent2); }
+  .md-body pre { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; overflow-x: auto; margin: 0.75rem 0; }
+  .md-body pre code { background: none; border: none; padding: 0; color: var(--text2); font-size: 0.85rem; }
+  .md-body a { color: var(--accent); text-decoration: none; }
+  .md-body a:hover { text-decoration: underline; }
+  .md-body img { max-width: 100%; border-radius: var(--radius-sm); }
+  .md-body blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; color: var(--text2); margin: 0.75rem 0; }
+  .md-body table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.88rem; }
+  .md-body th, .md-body td { border: 1px solid var(--border2); padding: 0.5rem 0.75rem; text-align: left; }
+  .md-body th { background: var(--bg3); font-weight: 600; }
+  .md-body hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center; padding: 4rem 2rem;
+    color: var(--text3);
+  }
+  .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+  .empty-state p { font-size: 0.9rem; line-height: 1.6; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--bg2); border: 1px solid var(--border2);
+    padding: 0.65rem 1.25rem; border-radius: 999px;
+    font-size: 0.85rem; font-weight: 500;
+    display: flex; align-items: center; gap: 0.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 999;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast .toast-icon { color: var(--green); }
+
+  /* FEATURES SECTION */
+  .features-section {
+    padding: 5rem 2rem;
+    max-width: 1100px; margin: 0 auto;
+    border-top: 1px solid var(--border);
+  }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem; margin-top: 3rem;
+  }
+  .feature-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: var(--radius-sm);
+    background: var(--accent-glow); border: 1px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; margin-bottom: 1rem;
+  }
+  .feature-card h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .feature-card p { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+  /* TRENDING */
+  .trending-section {
+    padding: 3rem 2rem 5rem;
+    max-width: 1100px; margin: 0 auto;
+    border-top: 1px solid var(--border);
+  }
+  .trending-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin-top: 2rem;
+  }
+  .trending-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.1rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .trending-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .trending-card .repo-name { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--accent); margin-bottom: 0.3rem; }
+  .trending-card .repo-desc { font-size: 0.78rem; color: var(--text2); line-height: 1.5; margin-bottom: 0.75rem; }
+  .trending-card .repo-meta { display: flex; gap: 0.75rem; }
+  .repo-stat { font-size: 0.73rem; color: var(--text3); display: flex; align-items: center; gap: 0.25rem; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text3); font-size: 0.82rem;
+  }
+  footer a { color: var(--text2); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  .footer-logo { font-family: var(--font-head); font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* TYPING EFFECT */
+  @keyframes typing { from { width: 0; } to { width: 100%; } }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .typing-text {
+    overflow: hidden; white-space: nowrap; border-right: 2px solid var(--accent);
+    animation: typing 1.5s steps(30,end), blink 0.8s step-end infinite alternate;
+    display: inline-block; max-width: 100%;
+  }
+
+  /* PULSE */
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 var(--accent-glow); } 50% { box-shadow: 0 0 0 8px transparent; } }
+  .pulse { animation: pulse 2s infinite; }
+
+  /* GLOW animate */
+  @keyframes gradflow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  .grad-text {
+    background: linear-gradient(270deg, var(--accent), var(--accent2), #ec4899, var(--teal));
+    background-size: 300% 300%;
+    animation: gradflow 5s ease infinite;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hint { font-size: 0.75rem; color: var(--text3); }
+  .divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+
+  /* SCROLL reveal */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (max-width: 768px) {
+    .hero { padding: 7rem 1.25rem 4rem; }
+    .hero h1 { font-size: 2.2rem; }
+    .app-section { padding: 1.25rem 1.25rem 4rem; }
+    .hero-stats { gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">✦ ReadmeMagic</div>
+  <div class="nav-right">
+    <button class="btn-ghost" onclick="scrollToApp()">Generator</button>
+    <a href="https://github.com" target="_blank" style="text-decoration:none;">
+      <button class="btn-ghost">GitHub ↗</button>
+    </a>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <button class="btn-primary" onclick="scrollToApp()">Try Free →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge"><span>✦ New</span> AI-Powered README Generator — Free Forever</div>
+  <h1>Generate <em>stunning</em><br>GitHub READMEs</h1>
+  <p>Stop wasting hours writing documentation. ReadmeMagic crafts beautiful, professional READMEs for your projects — in seconds.</p>
+  <div class="hero-cta">
+    <button class="btn-large primary pulse" onclick="scrollToApp()">🪄 Generate README</button>
+    <button class="btn-large secondary" onclick="loadSample(); scrollToApp()">⚡ See Sample</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">50K+</div><div class="stat-label">READMEs Generated</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Beautiful Templates</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free & Open Source</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">GitHub Stars</div></div>
+  </div>
+</section>
+
+<!-- MAIN APP -->
+<section class="app-section" id="app">
+  <div class="section-label reveal">
+    <h2>⚡ README Generator</h2>
+    <p>Fill in the details below and watch your README come to life</p>
+  </div>
+
+  <!-- TEMPLATE PICKER -->
+  <div class="panel reveal" style="margin-bottom:1.5rem;">
+    <div class="panel-header">
+      <div class="panel-title"><span class="icon">🎨</span> Choose Template</div>
+      <span class="hint" id="selected-template-name">Minimal selected</span>
+    </div>
+    <div class="template-grid" id="templateGrid"></div>
+  </div>
+
+  <!-- SPLIT LAYOUT -->
+  <div class="app-layout">
+
+    <!-- FORM -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title"><span class="icon">📝</span> Project Details</div>
+          <div style="display:flex;gap:0.5rem;">
+            <button class="btn-icon" onclick="loadSample()" title="Load sample data" style="width:auto;padding:0 0.65rem;font-size:0.75rem;font-weight:600;gap:0.3rem;display:flex;align-items:center;">⚡ Sample</button>
+            <button class="btn-icon btn-clear" onclick="clearForm()" title="Clear form">🗑</button>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-row">
+            <div class="field">
+              <label>Project Name <span class="req">*</span></label>
+              <input id="projectName" type="text" placeholder="e.g. AwesomeApp" />
+            </div>
+            <div class="field">
+              <label>GitHub Username</label>
+              <input id="githubUser" type="text" placeholder="e.g. johndoe" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Short Description <span class="req">*</span></label>
+            <input id="description" type="text" placeholder="A blazing fast web app for..." />
+          </div>
+
+          <div class="field">
+            <label>Long Description</label>
+            <textarea id="longDesc" placeholder="Explain what your project does, why it exists, and who it's for..." style="min-height:90px;"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Key Features</label>
+            <textarea id="features" placeholder="- ⚡ Blazing fast performance&#10;- 🎨 Beautiful dark/light mode&#10;- 🔒 End-to-end encryption" style="min-height:100px;"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Tech Stack</label>
+            <div class="tags-input-wrap" id="techWrap" onclick="document.getElementById('techInput').focus()">
+              <input class="tags-text-input" id="techInput" placeholder="Type tech + Enter (React, Node.js...)" />
+            </div>
+            <span class="hint">Press Enter or comma to add each technology</span>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label>Demo URL</label>
+              <input id="demoUrl" type="url" placeholder="https://yourapp.live" />
+            </div>
+            <div class="field">
+              <label>License</label>
+              <select id="license">
+                <option value="MIT">MIT</option>
+                <option value="Apache-2.0">Apache 2.0</option>
+                <option value="GPL-3.0">GPL 3.0</option>
+                <option value="BSD-3-Clause">BSD 3-Clause</option>
+                <option value="ISC">ISC</option>
+                <option value="Unlicense">Unlicense</option>
+                <option value="CC0-1.0">CC0</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Installation Steps</label>
+            <textarea id="installation" placeholder="git clone https://github.com/user/repo&#10;cd repo&#10;npm install&#10;npm run dev" style="min-height:90px;font-family:var(--font-mono);font-size:0.82rem;"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Usage Example</label>
+            <textarea id="usage" placeholder="import AwesomeApp from 'awesomeapp'&#10;&#10;const app = new AwesomeApp({ theme: 'dark' })&#10;app.init()" style="min-height:80px;font-family:var(--font-mono);font-size:0.82rem;"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Screenshot URL</label>
+            <input id="screenshot" type="url" placeholder="https://i.imgur.com/yourscreenshot.png" />
+          </div>
+
+          <div class="field">
+            <label>Project Tags / Topics</label>
+            <div class="tags-input-wrap" id="tagsWrap" onclick="document.getElementById('tagsInput').focus()">
+              <input class="tags-text-input" id="tagsInput" placeholder="react, typescript, open-source..." />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Badges to Include</label>
+            <div class="badges-wrap" id="badgesWrap"></div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-action btn-generate" onclick="generateReadme()">
+              🪄 Generate README
+            </button>
+            <button class="btn-action btn-sample" onclick="loadSample()">
+              ⚡ Load Sample
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-sticky">
+      <div class="panel">
+        <div class="preview-header">
+          <div class="preview-tabs">
+            <button class="preview-tab active" id="tab-raw" onclick="switchTab('raw')">Raw Markdown</button>
+            <button class="preview-tab" id="tab-preview" onclick="switchTab('preview')">Preview</button>
+          </div>
+          <div class="preview-actions">
+            <button class="btn-icon" id="copyBtn" onclick="copyMarkdown()" title="Copy markdown">📋</button>
+            <button class="btn-icon" id="downloadBtn" onclick="downloadReadme()" title="Download README.md">⬇️</button>
+          </div>
+        </div>
+        <div id="raw-view">
+          <div class="preview-box" id="rawOutput">
+            <div class="empty-state">
+              <div class="empty-icon">📄</div>
+              <p>Fill in your project details and click<br><strong style="color:var(--text2)">Generate README</strong> to see the magic ✨</p>
+            </div>
+          </div>
+        </div>
+        <div id="preview-view" style="display:none;">
+          <div class="preview-rendered">
+            <div class="md-body" id="renderedOutput">
+              <div class="empty-state">
+                <div class="empty-icon">👁️</div>
+                <p>Your rendered README preview will appear here</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="section-label reveal">
+    <h2 class="grad-text">Everything you need</h2>
+    <p>Powerful features built for developers who care about their projects</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">🎨</div>
+      <h3>Multiple Templates</h3>
+      <p>Choose from Minimal, Detailed, Library, API, CLI, SaaS, Game, Mobile, and more professionally crafted layouts.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🏷️</div>
+      <h3>Auto Badge Generator</h3>
+      <p>Automatically generate shields.io badges for license, version, build status, npm, and more with one click.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">👁️</div>
+      <h3>Live Preview</h3>
+      <p>See exactly how your README will look on GitHub with our real-time rendered markdown preview mode.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">⬇️</div>
+      <h3>One-Click Download</h3>
+      <p>Download your README.md file instantly, perfectly formatted and ready to drop into your repository.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">⚡</div>
+      <h3>Sample Projects</h3>
+      <p>Load beautiful sample data instantly to see what ReadmeMagic can produce, then customize it for your project.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🏷️</div>
+      <h3>Smart Tags</h3>
+      <p>Add custom project tags and topics that get formatted as GitHub-style topic badges in your README.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRENDING INSPIRATION -->
+<section class="trending-section reveal">
+  <div class="section-label">
+    <h2>🔥 Trending Project Styles</h2>
+    <p>Click any to load as inspiration template</p>
+  </div>
+  <div class="trending-grid" id="trendingGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:0.5rem;">
+    <span class="footer-logo">✦ ReadmeMagic</span>
+  </div>
+  <p>Built with ❤️ for the developer community &middot; <a href="https://github.com">GitHub</a> &middot; <a href="#">Twitter</a></p>
+  <p style="margin-top:0.4rem;font-size:0.75rem;">Free forever &middot; No signup required &middot; Open Source</p>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span id="toast-msg">Copied to clipboard!</span>
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────
+let techTags = [];
+let topicTags = [];
+let selectedTemplate = 'minimal';
+let currentMarkdown = '';
+let selectedBadges = ['license', 'stars', 'forks'];
+let currentTab = 'raw';
+
+// ─── TEMPLATES ───────────────────────────────────────────────
+const templates = [
+  { id: 'minimal', icon: '◻️', name: 'Minimal', desc: 'Clean, focused' },
+  { id: 'detailed', icon: '📖', name: 'Detailed', desc: 'Full docs' },
+  { id: 'library', icon: '📦', name: 'Library', desc: 'NPM packages' },
+  { id: 'saas', icon: '🚀', name: 'SaaS', desc: 'Web apps' },
+  { id: 'cli', icon: '⌨️', name: 'CLI Tool', desc: 'Terminal apps' },
+  { id: 'api', icon: '🔌', name: 'API', desc: 'REST / GraphQL' },
+];
+
+const badges = [
+  { id: 'license', label: 'License', color: '#22c55e' },
+  { id: 'stars', label: 'Stars', color: '#f59e0b' },
+  { id: 'forks', label: 'Forks', color: '#3b82f6' },
+  { id: 'issues', label: 'Issues', color: '#ef4444' },
+  { id: 'version', label: 'Version', color: '#8b5cf6' },
+  { id: 'build', label: 'Build', color: '#14b8a6' },
+  { id: 'npm', label: 'NPM', color: '#e11d48' },
+  { id: 'downloads', label: 'Downloads', color: '#06b6d4' },
+];
+
+const trendingProjects = [
+  { name: 'shadcn/ui', desc: 'Beautifully designed components built with Radix UI and Tailwind CSS', stars: '58.2k', lang: 'TypeScript', color: '#7c6af7' },
+  { name: 'vercel/next.js', desc: 'The React Framework for the Web — used by the world\'s leading companies', stars: '121k', lang: 'JavaScript', color: '#22c55e' },
+  { name: 'microsoft/vscode', desc: 'Visual Studio Code — open source code editor', stars: '163k', lang: 'TypeScript', color: '#14b8a6' },
+  { name: 'supabase/supabase', desc: 'The open source Firebase alternative', stars: '72k', lang: 'TypeScript', color: '#f59e0b' },
+  { name: 'trpc/trpc', desc: 'End-to-end typesafe APIs made easy', stars: '34k', lang: 'TypeScript', color: '#ec4899' },
+  { name: 'prisma/prisma', desc: 'Next-generation ORM for Node.js and TypeScript', stars: '40k', lang: 'TypeScript', color: '#3b82f6' },
+];
+
+// ─── INIT ────────────────────────────────────────────────────
+window.onload = function() {
+  renderTemplates();
+  renderBadges();
+  renderTrending();
+  setupTagInputs();
+  setupScrollReveal();
+};
+
+function renderTemplates() {
+  const grid = document.getElementById('templateGrid');
+  grid.innerHTML = templates.map(t => `
+    <div class="template-card ${t.id === selectedTemplate ? 'selected' : ''}" 
+         onclick="selectTemplate('${t.id}', '${t.name}')">
+      <div class="t-icon">${t.icon}</div>
+      <div class="t-name">${t.name}</div>
+    </div>
+  `).join('');
+}
+
+function selectTemplate(id, name) {
+  selectedTemplate = id;
+  document.getElementById('selected-template-name').textContent = name + ' selected';
+  renderTemplates();
+}
+
+function renderBadges() {
+  const wrap = document.getElementById('badgesWrap');
+  wrap.innerHTML = badges.map(b => {
+    const active = selectedBadges.includes(b.id);
+    return `<button class="badge-toggle" 
+      style="background:${active ? b.color + '22' : 'var(--bg3)'};
+             color:${active ? b.color : 'var(--text3)'};
+             border:1.5px solid ${active ? b.color : 'var(--border)'}"
+      onclick="toggleBadge('${b.id}')">${b.label}</button>`;
+  }).join('');
+}
+
+function toggleBadge(id) {
+  if (selectedBadges.includes(id)) {
+    selectedBadges = selectedBadges.filter(b => b !== id);
+  } else {
+    selectedBadges.push(id);
+  }
+  renderBadges();
+}
+
+function renderTrending() {
+  const grid = document.getElementById('trendingGrid');
+  grid.innerHTML = trendingProjects.map(p => `
+    <div class="trending-card" onclick="loadTrendingInspo('${p.name}', '${p.desc}')">
+      <div class="repo-name" style="color:${p.color}">${p.name}</div>
+      <div class="repo-desc">${p.desc}</div>
+      <div class="repo-meta">
+        <span class="repo-stat">⭐ ${p.stars}</span>
+        <span class="repo-stat">🔵 ${p.lang}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadTrendingInspo(name, desc) {
+  document.getElementById('projectName').value = name.split('/')[1];
+  document.getElementById('githubUser').value = name.split('/')[0];
+  document.getElementById('description').value = desc;
+  scrollToApp();
+  showToast('💡 Inspiration loaded! Customize it for your project.');
+}
+
+// ─── TAG INPUTS ───────────────────────────────────────────────
+function setupTagInputs() {
+  setupTagInput('techInput', 'techWrap', techTags);
+  setupTagInput('tagsInput', 'tagsWrap', topicTags);
+}
+
+function setupTagInput(inputId, wrapId, arr) {
+  const input = document.getElementById(inputId);
+  input.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ',') && input.value.trim()) {
+      e.preventDefault();
+      const val = input.value.replace(/,/g, '').trim();
+      if (val && !arr.includes(val)) {
+        arr.push(val);
+        renderTags(wrapId, arr, inputId);
+      }
+      input.value = '';
+    } else if (e.key === 'Backspace' && !input.value && arr.length) {
+      arr.pop();
+      renderTags(wrapId, arr, inputId);
+    }
+  });
+}
+
+function renderTags(wrapId, arr, inputId) {
+  const wrap = document.getElementById(wrapId);
+  const input = document.getElementById(inputId);
+  // Remove old chips
+  wrap.querySelectorAll('.tag-chip').forEach(c => c.remove());
+  arr.forEach((tag, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'tag-chip';
+    chip.innerHTML = `${tag}<button onclick="removeTag('${wrapId}','${inputId}',${i})" aria-label="Remove ${tag}">×</button>`;
+    wrap.insertBefore(chip, input);
+  });
+}
+
+function removeTag(wrapId, inputId, index) {
+  const arr = wrapId === 'techWrap' ? techTags : topicTags;
+  arr.splice(index, 1);
+  renderTags(wrapId, arr, inputId);
+}
+
+// ─── GENERATE ─────────────────────────────────────────────────
+function generateReadme() {
+  const name = document.getElementById('projectName').value.trim();
+  if (!name) {
+    showToast('⚠️ Please enter a project name first', true);
+    document.getElementById('projectName').focus();
+    return;
+  }
+
+  const data = {
+    name,
+    user: document.getElementById('githubUser').value.trim() || 'yourusername',
+    desc: document.getElementById('description').value.trim() || 'An awesome project',
+    longDesc: document.getElementById('longDesc').value.trim(),
+    features: document.getElementById('features').value.trim(),
+    tech: [...techTags],
+    demoUrl: document.getElementById('demoUrl').value.trim(),
+    license: document.getElementById('license').value,
+    installation: document.getElementById('installation').value.trim(),
+    usage: document.getElementById('usage').value.trim(),
+    screenshot: document.getElementById('screenshot').value.trim(),
+    tags: [...topicTags],
+    badges: [...selectedBadges],
+    template: selectedTemplate,
+  };
+
+  currentMarkdown = buildMarkdown(data);
+  document.getElementById('rawOutput').textContent = currentMarkdown;
+  document.getElementById('renderedOutput').innerHTML = marked.parse(currentMarkdown);
+
+  // Scroll to preview on mobile
+  if (window.innerWidth < 900) {
+    document.getElementById('app').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  showToast('✨ README generated successfully!');
+}
+
+function buildMarkdown(d) {
+  const repoUrl = `https://github.com/${d.user}/${d.name}`;
+  let md = '';
+
+  // BADGES
+  if (d.badges.length) {
+    const badgeMap = {
+      license: `[![License: ${d.license}](https://img.shields.io/badge/License-${d.license.replace(/-/g,'_')}-blue.svg)](https://opensource.org/licenses/${d.license})`,
+      stars: `![GitHub Stars](https://img.shields.io/github/stars/${d.user}/${d.name}?style=flat-square&color=yellow)`,
+      forks: `![GitHub Forks](https://img.shields.io/github/forks/${d.user}/${d.name}?style=flat-square&color=blue)`,
+      issues: `![GitHub Issues](https://img.shields.io/github/issues/${d.user}/${d.name}?style=flat-square&color=red)`,
+      version: `![Version](https://img.shields.io/badge/version-1.0.0-purple?style=flat-square)`,
+      build: `![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)`,
+      npm: `![npm](https://img.shields.io/npm/v/${d.name.toLowerCase()}?style=flat-square&color=red)`,
+      downloads: `![Downloads](https://img.shields.io/npm/dm/${d.name.toLowerCase()}?style=flat-square)`,
+    };
+    const badgeStr = d.badges.map(b => badgeMap[b]).filter(Boolean).join(' ');
+    md += badgeStr + '\n\n';
+  }
+
+  // TITLE & DESC
+  md += `# ${d.name}\n\n`;
+  md += `> ${d.desc}\n\n`;
+
+  if (d.demoUrl || d.user) {
+    const links = [];
+    if (d.demoUrl) links.push(`[🌐 Live Demo](${d.demoUrl})`);
+    links.push(`[📖 Documentation](${repoUrl}/wiki)`);
+    links.push(`[🐛 Report Bug](${repoUrl}/issues)`);
+    links.push(`[✨ Request Feature](${repoUrl}/issues)`);
+    md += links.join(' · ') + '\n\n';
+  }
+
+  // SCREENSHOT
+  if (d.screenshot) {
+    md += `![${d.name} Screenshot](${d.screenshot})\n\n`;
+  }
+
+  // LONG DESC
+  if (d.longDesc) {
+    md += `## 📌 About\n\n${d.longDesc}\n\n`;
+  }
+
+  // FEATURES
+  if (d.features) {
+    md += `## ✨ Features\n\n${d.features}\n\n`;
+  }
+
+  // TECH STACK
+  if (d.tech.length) {
+    md += `## 🛠️ Built With\n\n`;
+    d.tech.forEach(t => {
+      md += `- **${t}**\n`;
+    });
+    md += '\n';
+  }
+
+  // GETTING STARTED
+  md += `## 🚀 Getting Started\n\n`;
+  md += `### Prerequisites\n\nMake sure you have the following installed:\n- Node.js 18+\n- Git\n\n`;
+
+  // INSTALLATION
+  md += `### Installation\n\n`;
+  if (d.installation) {
+    md += '```bash\n' + d.installation + '\n```\n\n';
+  } else {
+    md += `\`\`\`bash\n# Clone the repository\ngit clone ${repoUrl}.git\n\n# Navigate to project directory\ncd ${d.name}\n\n# Install dependencies\nnpm install\n\n# Start development server\nnpm run dev\n\`\`\`\n\n`;
+  }
+
+  // USAGE
+  if (d.usage) {
+    md += `## 💻 Usage\n\n\`\`\`${detectLanguage(d.usage)}\n${d.usage}\n\`\`\`\n\n`;
+  }
+
+  // TEMPLATE-SPECIFIC SECTIONS
+  if (d.template === 'api') {
+    md += `## 📡 API Reference\n\n| Endpoint | Method | Description |\n|---|---|---|\n| \`/api/v1/example\` | \`GET\` | Get all items |\n| \`/api/v1/example/:id\` | \`GET\` | Get item by ID |\n| \`/api/v1/example\` | \`POST\` | Create new item |\n| \`/api/v1/example/:id\` | \`PUT\` | Update item |\n| \`/api/v1/example/:id\` | \`DELETE\` | Delete item |\n\n`;
+  }
+
+  if (d.template === 'library') {
+    md += `## 📦 API Reference\n\nSee the [full documentation](${repoUrl}/wiki) for a complete API reference.\n\n`;
+  }
+
+  // CONTRIBUTING
+  md += `## 🤝 Contributing\n\nContributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.\n\n1. Fork the Project\n2. Create your Feature Branch (\`git checkout -b feature/AmazingFeature\`)\n3. Commit your Changes (\`git commit -m 'Add some AmazingFeature'\`)\n4. Push to the Branch (\`git push origin feature/AmazingFeature\`)\n5. Open a Pull Request\n\n`;
+
+  // ROADMAP
+  if (d.template !== 'minimal') {
+    md += `## 🗺️ Roadmap\n\n- [x] Core functionality\n- [x] Initial release\n- [ ] Add more features\n- [ ] Improve performance\n- [ ] Mobile app\n\nSee the [open issues](${repoUrl}/issues) for a full list of proposed features.\n\n`;
+  }
+
+  // LICENSE
+  md += `## 📄 License\n\nDistributed under the **${d.license} License**. See \`LICENSE\` for more information.\n\n`;
+
+  // AUTHOR
+  md += `## 👤 Author\n\n**${d.user}**\n\n- GitHub: [@${d.user}](https://github.com/${d.user})\n- Twitter: [@${d.user}](https://twitter.com/${d.user})\n\n`;
+
+  // TAGS
+  if (d.tags.length) {
+    md += `---\n\n`;
+    md += d.tags.map(t => `\`${t}\``).join(' ');
+    md += '\n\n';
+  }
+
+  // FOOTER
+  md += `---\n\n<p align="center">Made with ❤️ using <a href="https://readmemagic.dev">ReadmeMagic</a> ✦</p>\n`;
+
+  return md;
+}
+
+function detectLanguage(code) {
+  if (code.includes('import ') || code.includes('const ') || code.includes('function')) return 'javascript';
+  if (code.includes('def ') || code.includes('import ') || code.includes('print(')) return 'python';
+  if (code.includes('package main') || code.includes('func ')) return 'go';
+  return 'bash';
+}
+
+// ─── SAMPLE DATA ──────────────────────────────────────────────
+function loadSample() {
+  document.getElementById('projectName').value = 'QuantumUI';
+  document.getElementById('githubUser').value = 'devmagician';
+  document.getElementById('description').value = 'A blazing-fast React component library with zero runtime dependencies';
+  document.getElementById('longDesc').value = 'QuantumUI is a modern, accessible, and highly customizable React component library. Built with TypeScript and styled with Tailwind CSS, it provides everything you need to build beautiful, production-ready applications without the overhead of traditional UI libraries.';
+  document.getElementById('features').value = '- ⚡ Zero runtime dependencies — pure CSS and React\n- 🎨 40+ fully customizable components\n- 🌙 Built-in dark mode support\n- ♿ WCAG 2.1 AA accessible\n- 📦 Tree-shakeable — import only what you need\n- 🔷 Full TypeScript support with generics\n- 📱 Mobile-first responsive design\n- 🧪 100% test coverage';
+  document.getElementById('demoUrl').value = 'https://quantumui.dev';
+  document.getElementById('screenshot').value = 'https://user-images.githubusercontent.com/placeholder/screenshot.png';
+  document.getElementById('installation').value = '# Install via npm\nnpm install quantum-ui\n\n# Or with yarn\nyarn add quantum-ui\n\n# Or with pnpm\npnpm add quantum-ui';
+  document.getElementById('usage').value = "import { Button, Card, Modal } from 'quantum-ui'\n\nfunction App() {\n  return (\n    <Card>\n      <Button variant=\"primary\">Click me</Button>\n    </Card>\n  )\n}";
+  document.getElementById('license').value = 'MIT';
+
+  techTags.length = 0;
+  ['React', 'TypeScript', 'Tailwind CSS', 'Radix UI', 'Vite', 'Vitest'].forEach(t => techTags.push(t));
+  renderTags('techWrap', techTags, 'techInput');
+
+  topicTags.length = 0;
+  ['react', 'typescript', 'ui-library', 'components', 'tailwindcss', 'open-source'].forEach(t => topicTags.push(t));
+  renderTags('tagsWrap', topicTags, 'tagsInput');
+
+  selectedBadges = ['license', 'stars', 'forks', 'version', 'npm'];
+  renderBadges();
+
+  showToast('⚡ Sample data loaded!');
+  generateReadme();
+}
+
+function clearForm() {
+  ['projectName','githubUser','description','longDesc','features','demoUrl','installation','usage','screenshot'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  techTags.length = 0;
+  topicTags.length = 0;
+  renderTags('techWrap', techTags, 'techInput');
+  renderTags('tagsWrap', topicTags, 'tagsInput');
+  selectedBadges = ['license', 'stars', 'forks'];
+  renderBadges();
+  currentMarkdown = '';
+  document.getElementById('rawOutput').textContent = '';
+  document.getElementById('rawOutput').innerHTML = '<div class="empty-state"><div class="empty-icon">📄</div><p>Fill in your project details and click<br><strong style="color:var(--text2)">Generate README</strong> to see the magic ✨</p></div>';
+  document.getElementById('renderedOutput').innerHTML = '<div class="empty-state"><div class="empty-icon">👁️</div><p>Your rendered README preview will appear here</p></div>';
+  showToast('🗑️ Form cleared');
+}
+
+// ─── TABS ─────────────────────────────────────────────────────
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('raw-view').style.display = tab === 'raw' ? 'block' : 'none';
+  document.getElementById('preview-view').style.display = tab === 'preview' ? 'block' : 'none';
+  document.getElementById('tab-raw').className = 'preview-tab' + (tab === 'raw' ? ' active' : '');
+  document.getElementById('tab-preview').className = 'preview-tab' + (tab === 'preview' ? ' active' : '');
+
+  if (tab === 'preview' && currentMarkdown) {
+    document.getElementById('renderedOutput').innerHTML = marked.parse(currentMarkdown);
+  }
+}
+
+// ─── COPY / DOWNLOAD ─────────────────────────────────────────
+async function copyMarkdown() {
+  if (!currentMarkdown) {
+    showToast('⚠️ Generate a README first', true);
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(currentMarkdown);
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓';
+    btn.classList.add('success');
+    showToast('📋 Copied to clipboard!');
+    setTimeout(() => { btn.textContent = '📋'; btn.classList.remove('success'); }, 2000);
+  } catch {
+    showToast('⚠️ Copy failed. Try selecting the text manually.', true);
+  }
+}
+
+function downloadReadme() {
+  if (!currentMarkdown) {
+    showToast('⚠️ Generate a README first', true);
+    return;
+  }
+  const blob = new Blob([currentMarkdown], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'README.md';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('⬇️ README.md downloaded!');
+}
+
+// ─── THEME ────────────────────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') !== 'light';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
+}
+
+// ─── SCROLL ──────────────────────────────────────────────────
+function scrollToApp() {
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+}
+
+function setupScrollReveal() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ─── TOAST ───────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, isWarning) {
+  const toast = document.getElementById('toast');
+  const icon = toast.querySelector('.toast-icon');
+  document.getElementById('toast-msg').textContent = msg;
+  icon.textContent = isWarning ? '⚠️' : '✓';
+  icon.style.color = isWarning ? 'var(--amber)' : 'var(--green)';
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
