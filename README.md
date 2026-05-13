@@ -1,126 +1,123 @@
 <div align="center">
 
-<!-- Animated Banner -->
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=200&section=header&text=AI%20Resume%20Builder&fontSize=60&fontColor=ffffff&fontAlignY=38&desc=Craft%20ATS-Optimized%20Resumes%20with%20the%20Power%20of%20AI&descAlignY=58&descSize=18&animation=fadeIn" alt="AI Resume Builder Banner"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:6c47ff,100:a855f7&height=220&section=header&text=AI%20Resume%20Builder&fontSize=52&fontColor=ffffff&fontAlignY=40&desc=Build%20professional%2C%20ATS-friendly%20resumes%20in%20minutes%20with%20AI%20assistance%20and%20smart%20suggestions.&descAlignY=62&descSize=15&animation=fadeIn" width="100%"/>
 
 <br/>
 
-<!-- Badges Row 1 -->
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-6C63FF?style=for-the-badge&logoColor=white)](https://your-demo-link.vercel.app)
-[![GitHub Stars](https://img.shields.io/github/stars/yourusername/ai-resume-builder?style=for-the-badge&color=FFD700&logo=github)](https://github.com/yourusername/ai-resume-builder/stargazers)
-[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-EC4899?style=for-the-badge)](CONTRIBUTING.md)
-
-<!-- Badges Row 2 -->
-<br/>
-![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)
-![Claude AI](https://img.shields.io/badge/Claude-AI-CC785C?style=flat-square)
-![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=flat-square&logo=node.js)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss)
-
-<br/><br/>
-
-> **Build resumes that get interviews — not filtered by bots.**  
-> An AI-powered resume builder with ATS optimization, live preview, and one-click export.
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-6c47ff?style=for-the-badge&logoColor=white)](https://yourusername.github.io/ai-resume-builder/)
+[![View Docs](https://img.shields.io/badge/📖_View_Documentation-1e1e2e?style=for-the-badge&logoColor=white)](https://yourusername.github.io/ai-resume-builder/docs)
 
 <br/>
+
+<table>
+<tr>
+<td align="center" width="120">🤖<br/><sub><b>AI Suggestions</b></sub></td>
+<td align="center" width="120">🎯<br/><sub><b>ATS Score Checker</b></sub></td>
+<td align="center" width="120">💾<br/><sub><b>Auto Save</b></sub></td>
+<td align="center" width="120">📄<br/><sub><b>Multiple Templates</b></sub></td>
+<td align="center" width="120">📤<br/><sub><b>Export PDF</b></sub></td>
+</tr>
+</table>
 
 </div>
+
+---
+
+<div align="center">
+
+![Stars](https://img.shields.io/github/stars/yourusername/ai-resume-builder?style=flat-square&logo=github&label=Stars&color=FFD700)
+![Forks](https://img.shields.io/github/forks/yourusername/ai-resume-builder?style=flat-square&logo=github&label=Forks&color=6c47ff)
+![Issues](https://img.shields.io/github/issues/yourusername/ai-resume-builder?style=flat-square&color=ef4444&label=Issues)
+![Last Commit](https://img.shields.io/github/last-commit/yourusername/ai-resume-builder?style=flat-square&color=22c55e&label=Last+Commit)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+![Release](https://img.shields.io/badge/Release-v1.2-a855f7?style=flat-square)
+
+</div>
+
+---
+
+## 👋 Welcome to **AI Resume Builder**!
+
+An all-in-one **AI-powered** resume builder that helps you create professional, ATS-friendly resumes with smart suggestions, **real-time score analysis**, and **beautiful templates**.
 
 ---
 
 ## 📸 Screenshots
 
-<div align="center">
+| ![Dashboard](https://placehold.co/200x130/0f0c29/ffffff?text=Dashboard+Overview) | ![Editor](https://placehold.co/200x130/1a1a2e/ffffff?text=Editor+Edit+Mode) | ![ATS Checker](https://placehold.co/200x130/16213e/22c55e?text=ATS+Score+85%2F100) | ![AI Suggestions](https://placehold.co/200x130/0f0c29/a855f7?text=AI+Suggestions+Panel) |
+|:---:|:---:|:---:|:---:|
+| Dashboard Overview | Editor – Edit Mode | ATS Score Checker | AI Suggestions Panel |
 
-### ✨ Dashboard & Resume Editor
-
-| ![Dashboard](https://placehold.co/800x450/0f0c29/ffffff?text=Dashboard+%E2%80%94+Resume+Overview) |
-|:---:|
-| *Clean dashboard with resume management and AI suggestions* |
-
-<br/>
-
-| ![Editor](https://placehold.co/800x450/302b63/ffffff?text=Live+Editor+%E2%80%94+Split+View) | ![AI Suggestions](https://placehold.co/800x450/24243e/ffffff?text=AI+Suggestions+Panel) |
-|:---:|:---:|
-| *Real-time dual-pane editor with instant preview* | *Context-aware AI writing assistant* |
-
-<br/>
-
-| ![ATS Score](https://placehold.co/800x450/1a1a2e/6C63FF?text=ATS+Score+%E2%80%94+98%25+Match) | ![Export Options](https://placehold.co/800x450/16213e/22C55E?text=Export+%E2%80%94+PDF+%2F+DOCX+%2F+JSON) |
-|:---:|:---:|
-| *Real-time ATS compatibility scoring* | *Multi-format export with one click* |
-
-### 📱 Responsive on Every Device
-
-| ![Mobile View](https://placehold.co/300x600/0f0c29/ffffff?text=Mobile+View) | ![Tablet View](https://placehold.co/500x600/302b63/ffffff?text=Tablet+View) | ![Desktop View](https://placehold.co/700x450/24243e/ffffff?text=Desktop+View) |
-|:---:|:---:|:---:|
-| *Mobile* | *Tablet* | *Desktop* |
-
-</div>
+✨ *More screenshots available in the [/screenshots](./screenshots) folder*
 
 ---
 
-## 🌟 Features
+## ✨ Features
+
+| | Feature | Description |
+|---|---|---|
+| 🤖 | **AI Resume Building** | AI suggests content based on your role and experience. |
+| 🎯 | **ATS Score Checker** | Get real-time ATS score with detailed improvement tips. |
+| 💾 | **Auto Save** | Your data is automatically saved in your browser. |
+| 📄 | **Multiple Templates** | Choose from multiple beautiful, modern templates. |
+| 🔍 | **Smart Suggestions** | AI-powered smart suggestions to improve your resume. |
+| 📤 | **Export to PDF** | Download your resume as a high-quality PDF. |
+| ✏️ | **Easy Customization** | Fully customizable sections and styling. |
+| 🔒 | **Privacy Focused** | Your data stays in your browser. We don't store anything. |
+| 📱 | **Responsive Design** | Works perfectly on desktop, tablet, and mobile. |
+
+---
+
+## 🛠️ Tech Stack
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Marked.js](https://img.shields.io/badge/Marked.js-000000?style=for-the-badge&logo=markdown&logoColor=white)
+![html2pdf.js](https://img.shields.io/badge/html2pdf.js-ef4444?style=for-the-badge&logoColor=white)
+![Font Awesome](https://img.shields.io/badge/Font_Awesome-528DD7?style=for-the-badge&logo=fontawesome&logoColor=white)
+
+---
+
+## 📦 Installation
 
 <table>
 <tr>
 <td width="50%">
 
-### 🤖 AI-Powered Writing
-- **Smart Content Generation** — Describe your role; AI writes compelling bullet points
-- **Tone Tuning** — Switch between formal, creative, or technical voices
-- **Keyword Injection** — Auto-inserts job-specific keywords for ATS
-- **Gap Detection** — Flags missing sections recruiters expect
+### Steps
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/ai-resume-builder.git
+```
+
+2. **Open the project folder**
+```bash
+cd ai-resume-builder
+```
+
+3. **Open `index.html` in your browser**
+
+That's it! 🎉
 
 </td>
 <td width="50%">
 
-### 📊 ATS Optimization
-- **Real-Time ATS Score** — Live compatibility score as you type (0–100)
-- **Job Description Matching** — Paste any JD and get a match analysis
-- **Format Compliance** — Ensures parsable structure across all ATS systems
-- **Keyword Gap Report** — Shows exactly which skills are missing
+### 📁 Folder Structure
 
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 🎨 Design & Templates
-- **15+ Professional Templates** — Minimal, creative, executive, and more
-- **Live Preview** — See your resume update in real time
-- **Custom Color Themes** — One-click palette swaps
-- **Font Pairing System** — Curated typography for every industry
-
-</td>
-<td width="50%">
-
-### 📤 Export & Sharing
-- **PDF Export** — Pixel-perfect, print-ready output
-- **DOCX Download** — Recruiter-editable Word format
-- **Public Share Link** — Shareable URL with privacy controls
-- **JSON Resume** — Portable open-standard format
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 🔒 Privacy & Security
-- **End-to-End Encryption** — Resume data never stored in plain text
-- **Guest Mode** — Use the tool without creating an account
-- **Data Export & Deletion** — Full GDPR-compliant controls
-
-</td>
-<td width="50%">
-
-### 📱 Responsive Design
-- **Mobile-First Layout** — Edit on any device, anywhere
-- **Touch-Optimized UI** — Drag-and-drop reordering on mobile
-- **Progressive Web App** — Installable on iOS & Android
-- **Offline Mode** — Continue editing without internet
+```
+ai-resume-builder/
+├── index.html
+├── style.css
+├── script.js
+├── images/
+│   └── logo.png
+├── templates/
+│   ├── template1.html
+│   └── template2.html
+└── README.md
+```
 
 </td>
 </tr>
@@ -128,194 +125,21 @@
 
 ---
 
-## 🚀 Live Demo
-
 <div align="center">
 
-[![Open Live Demo](https://img.shields.io/badge/▶_Open_Live_Demo-6C63FF?style=for-the-badge&logoColor=white&labelColor=302b63)](https://your-demo-link.vercel.app)
+## ⭐ Star this repository
 
-> **Try it instantly** — No signup required. Use the guest mode with sample data preloaded.
+If you find this project helpful, please give it a ⭐
+It really motivates me to build more!
 
-| Feature | Free Tier | Pro |
-|--------|-----------|-----|
-| Resume Templates | 5 | 15+ |
-| AI Suggestions | 10/month | Unlimited |
-| ATS Scoring | ✅ | ✅ |
-| Export Formats | PDF only | PDF, DOCX, JSON |
-| Custom Domains | ❌ | ✅ |
+[![Star this repo](https://img.shields.io/badge/⭐_Star_this_repo-6c47ff?style=for-the-badge&logoColor=white)](https://github.com/yourusername/ai-resume-builder)
+
+---
+
+*Made with ❤️ by Your Name*
+
+© 2024 AI Resume Builder — All rights reserved
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:a855f7,100:6c47ff&height=100&section=footer" width="100%"/>
 
 </div>
-
----
-
-## 🛠️ Tech Stack
-
-<div align="center">
-
-| Layer | Technology |
-|-------|-----------|
-| **Frontend** | React 18 + TypeScript + Vite |
-| **Styling** | Tailwind CSS + Framer Motion |
-| **AI Engine** | Claude API (Anthropic) |
-| **Backend** | Node.js + Express + tRPC |
-| **Database** | PostgreSQL + Prisma ORM |
-| **Auth** | NextAuth.js / Clerk |
-| **Storage** | AWS S3 / Cloudflare R2 |
-| **Deployment** | Vercel (frontend) + Railway (backend) |
-| **PDF Export** | Puppeteer + React-PDF |
-
-</div>
-
----
-
-## ⚡ Installation
-
-### Prerequisites
-
-```bash
-node >= 20.0.0
-npm >= 9.0.0
-# PostgreSQL database running locally or on a cloud provider
-```
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/ai-resume-builder.git
-cd ai-resume-builder
-```
-
-### 2. Install Dependencies
-
-```bash
-# Install all workspace dependencies
-npm install
-```
-
-### 3. Configure Environment Variables
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your credentials:
-
-```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/resume_builder"
-
-# AI — Get your key at console.anthropic.com
-ANTHROPIC_API_KEY="sk-ant-..."
-
-# Auth
-NEXTAUTH_SECRET="your-secret-here"
-NEXTAUTH_URL="http://localhost:3000"
-
-# Storage (optional for file uploads)
-AWS_ACCESS_KEY_ID="..."
-AWS_SECRET_ACCESS_KEY="..."
-AWS_S3_BUCKET="resume-builder-uploads"
-```
-
-### 4. Set Up the Database
-
-```bash
-# Push schema to database
-npx prisma db push
-
-# Seed with sample templates (optional)
-npm run db:seed
-```
-
-### 5. Run Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) — you're live! 🎉
-
----
-
-## 📁 Project Structure
-
-```
-ai-resume-builder/
-├── apps/
-│   ├── web/                   # React frontend (Vite)
-│   │   ├── src/
-│   │   │   ├── components/    # UI components
-│   │   │   │   ├── editor/    # Resume editor panels
-│   │   │   │   ├── preview/   # Live PDF preview
-│   │   │   │   └── ats/       # ATS scoring widgets
-│   │   │   ├── hooks/         # Custom React hooks
-│   │   │   ├── pages/         # Route-based pages
-│   │   │   └── lib/           # Utilities & API client
-│   └── api/                   # Node.js backend
-│       ├── src/
-│       │   ├── routes/        # tRPC routers
-│       │   ├── services/      # Business logic
-│       │   │   ├── ai/        # Claude AI integration
-│       │   │   └── ats/       # ATS scoring engine
-│       │   └── db/            # Prisma models & queries
-├── packages/
-│   ├── ui/                    # Shared component library
-│   └── types/                 # Shared TypeScript types
-├── prisma/
-│   └── schema.prisma
-└── docs/                      # Documentation
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are what make this project thrive. Any contributions are **greatly appreciated**.
-
-```bash
-# 1. Fork the repo
-# 2. Create your feature branch
-git checkout -b feature/AmazingFeature
-
-# 3. Commit your changes
-git commit -m 'feat: add AmazingFeature'
-
-# 4. Push to the branch
-git push origin feature/AmazingFeature
-
-# 5. Open a Pull Request
-```
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for our code of conduct and PR guidelines.
-
----
-
-## 📄 License
-
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
-
----
-
-## 🙏 Acknowledgements
-
-- [Anthropic Claude](https://anthropic.com) — AI backbone of the application
-- [React PDF](https://react-pdf.org/) — PDF rendering
-- [Shadcn/UI](https://ui.shadcn.com/) — UI component primitives
-- [JSON Resume](https://jsonresume.org/) — Open resume standard
-
----
-
-<div align="center">
-
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:24243e,50:302b63,100:0f0c29&height=120&section=footer" alt="footer"/>
-
-**Built with ❤️ by [Your Name](https://github.com/yourusername)**
-
-[![GitHub](https://img.shields.io/badge/GitHub-yourusername-181717?style=flat-square&logo=github)](https://github.com/yourusername)
-[![Twitter](https://img.shields.io/badge/Twitter-@yourhandle-1DA1F2?style=flat-square&logo=twitter)](https://twitter.com/yourhandle)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-yourname-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/yourname)
-
-⭐ **Star this repo if it helped you land your dream job!** ⭐
-
-</div>
-
