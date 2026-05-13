@@ -500,6 +500,27 @@
     .app-section { padding: 1.25rem 1.25rem 4rem; }
     .hero-stats { gap: 2rem; }
   }
+
+  /* ─── AUTO-SAVE STATUS ───────────────────────────────────────── */
+  #save-status {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-size: 0.75rem; font-family: var(--font-mono);
+    color: var(--text3); transition: color 0.3s, opacity 0.3s;
+    opacity: 0; margin-left: 0.5rem;
+  }
+  #save-status.visible { opacity: 1; }
+  #save-status.saving  { color: var(--amber); }
+  #save-status.saved   { color: var(--green); }
+  #save-status.error   { color: var(--red); }
+  #save-status .save-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; flex-shrink: 0;
+  }
+  #save-status.saving .save-dot { animation: savePulse 0.8s ease-in-out infinite; }
+  @keyframes savePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.3; transform: scale(0.7); }
+  }
 </style>
 </head>
 <body>
@@ -558,7 +579,13 @@
     <div>
       <div class="panel">
         <div class="panel-header">
-          <div class="panel-title"><span class="icon">📝</span> Project Details</div>
+          <div class="panel-title">
+            <span class="icon">📝</span> Project Details
+            <span id="save-status" aria-live="polite">
+              <span class="save-dot"></span>
+              <span id="save-status-text">Saved</span>
+            </span>
+          </div>
           <div style="display:flex;gap:0.5rem;">
             <button class="btn-icon" onclick="loadSample()" title="Load sample data" style="width:auto;padding:0 0.65rem;font-size:0.75rem;font-weight:600;gap:0.3rem;display:flex;align-items:center;">⚡ Sample</button>
             <button class="btn-icon btn-clear" onclick="clearForm()" title="Clear form">🗑</button>
@@ -768,6 +795,112 @@ let currentMarkdown = '';
 let selectedBadges = ['license', 'stars', 'forks'];
 let currentTab = 'raw';
 
+// ─── AUTO-SAVE ────────────────────────────────────────────────
+const SAVE_KEY   = 'readmemagic_autosave';
+const SAVE_DELAY = 3000;
+let saveTimer    = null;
+const SAVE_FIELDS = [
+  'projectName','githubUser','description','longDesc',
+  'features','demoUrl','license','installation','usage','screenshot'
+];
+
+function setSaveStatus(state, text) {
+  const el   = document.getElementById('save-status');
+  const span = document.getElementById('save-status-text');
+  el.className = 'visible ' + state;
+  span.textContent = text;
+}
+
+function saveToStorage() {
+  setSaveStatus('saving', 'Saving…');
+  try {
+    const data = {};
+    SAVE_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) data[id] = el.value;
+    });
+    data._techTags  = [...techTags];
+    data._topicTags = [...topicTags];
+    data._template  = selectedTemplate;
+    data._badges    = [...selectedBadges];
+    data._savedAt   = Date.now();
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+    setSaveStatus('saved', '✓ Saved');
+    setTimeout(() => {
+      const el = document.getElementById('save-status');
+      if (el && el.classList.contains('saved')) el.className = 'saved';
+    }, 3000);
+  } catch(e) {
+    setSaveStatus('error', 'Save failed');
+  }
+}
+
+function scheduleAutoSave() {
+  clearTimeout(saveTimer);
+  const el = document.getElementById('save-status');
+  if (el) { el.className = 'visible saving'; }
+  document.getElementById('save-status-text').textContent = 'Unsaved…';
+  saveTimer = setTimeout(saveToStorage, SAVE_DELAY);
+}
+
+function restoreFromStorage() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    SAVE_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id] !== undefined) el.value = data[id];
+    });
+    if (data._techTags && data._techTags.length) {
+      techTags.length = 0;
+      data._techTags.forEach(t => techTags.push(t));
+      renderTags('techWrap', techTags, 'techInput');
+    }
+    if (data._topicTags && data._topicTags.length) {
+      topicTags.length = 0;
+      data._topicTags.forEach(t => topicTags.push(t));
+      renderTags('tagsWrap', topicTags, 'tagsInput');
+    }
+    if (data._template) {
+      selectedTemplate = data._template;
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.template-card').forEach(c => {
+          c.classList.toggle('selected', c.dataset.id === selectedTemplate);
+        });
+        const name = templates.find(t => t.id === selectedTemplate);
+        const label = document.getElementById('selected-template-name');
+        if (label && name) label.textContent = name.name + ' selected';
+      });
+    }
+    if (data._badges) { selectedBadges = data._badges; renderBadges(); }
+
+    const ago = data._savedAt ? Math.round((Date.now() - data._savedAt) / 1000) : null;
+    const label = ago !== null && ago < 3600
+      ? `Restored (${ago < 60 ? ago + 's ago' : Math.round(ago/60) + 'm ago'})`
+      : 'Restored';
+    setSaveStatus('saved', label);
+    setTimeout(() => {
+      const el = document.getElementById('save-status');
+      if (el) el.className = 'saved';
+    }, 4000);
+  } catch(e) {
+    localStorage.removeItem(SAVE_KEY);
+  }
+}
+
+function attachAutoSaveListeners() {
+  SAVE_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', scheduleAutoSave);
+  });
+  ['techWrap','tagsWrap','badgesWrap'].forEach(wrId => {
+    const wr = document.getElementById(wrId);
+    if (wr) new MutationObserver(scheduleAutoSave).observe(wr, { childList: true, subtree: true });
+  });
+}
+// ─── END AUTO-SAVE ────────────────────────────────────────────
+
 // ─── TEMPLATES ───────────────────────────────────────────────
 const templates = [
   { id: 'minimal', icon: '◻️', name: 'Minimal', desc: 'Clean, focused' },
@@ -805,6 +938,8 @@ window.onload = function() {
   renderTrending();
   setupTagInputs();
   setupScrollReveal();
+  restoreFromStorage();
+  attachAutoSaveListeners();
 };
 
 function renderTemplates() {
@@ -822,6 +957,7 @@ function selectTemplate(id, name) {
   selectedTemplate = id;
   document.getElementById('selected-template-name').textContent = name + ' selected';
   renderTemplates();
+  scheduleAutoSave();
 }
 
 function renderBadges() {
@@ -1108,6 +1244,7 @@ function clearForm() {
   document.getElementById('rawOutput').innerHTML = '<div class="empty-state"><div class="empty-icon">📄</div><p>Fill in your project details and click<br><strong style="color:var(--text2)">Generate README</strong> to see the magic ✨</p></div>';
   document.getElementById('renderedOutput').innerHTML = '<div class="empty-state"><div class="empty-icon">👁️</div><p>Your rendered README preview will appear here</p></div>';
   showToast('🗑️ Form cleared');
+  localStorage.removeItem(SAVE_KEY);
 }
 
 // ─── TABS ─────────────────────────────────────────────────────
