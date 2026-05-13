@@ -1,3 +1,17 @@
+<p align="center">
+  <img src="banner.png" width="100%" />
+</p>
+
+<h1 align="center">AI Resume Builder</h1>
+
+<p align="center">
+  Build ATS-optimized resumes with AI assistance.
+</p>
+
+<p align="center">
+  <a href="https://pspower2024.github.io/ai-resume-builder/">Live Demo</a>
+</p>
+
 <div align="center">
 
 <!-- Animated Banner -->
